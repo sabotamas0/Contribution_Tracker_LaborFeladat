@@ -2,8 +2,8 @@
 
 namespace ContributionTracker.Interfaces
 {
-    public interface ITransactionProvider
+    public interface ITransactionUpdate
     {
-        IList<Transaction> Read();
+        void Update(TransactionDto transaction);
     }
 }

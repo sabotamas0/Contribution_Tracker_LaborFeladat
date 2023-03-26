@@ -2,8 +2,8 @@
 
 namespace ContributionTracker.Interfaces
 {
-    public interface ITransactionWriter
+    public interface ITransactionWrite
     {
-        void Write(Transaction transaction);
+        void Write(TransactionDto transaction);
     }
 }
