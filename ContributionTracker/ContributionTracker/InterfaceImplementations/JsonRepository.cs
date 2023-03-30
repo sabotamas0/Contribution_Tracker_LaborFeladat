@@ -2,51 +2,47 @@
 using ContributionTracker.Models;
 using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
+using System.Transactions;
 using System.Xml.Linq;
+using Transaction = ContributionTracker.Models.Transaction;
 
 namespace ContributionTracker.InterfaceImplementations
 {
-    public class JsonCrud : ITransactionCrud
+    public class JsonRepository: ITransactionRepository
     {
-        private readonly string _filename;
-        private List<Transaction> _transActions;
+        private List<Transaction> _Transactions;
         private List<Transaction> Transactions
         {
             get
             {
-                if(_transActions==null)
+                if(_Transactions == null)
                 {
-                    return _transActions = Read();
+                    return _Transactions = Read();
                 }
-                return _transActions;
+                return _Transactions;
             }
         }
 
-        public JsonCrud(string filename)
+        public void Delete(Guid transactionId)
         {
-            _filename = filename;
-        }
-
-        public void Delete(TransactionDto transaction)
-        {
-            _transActions.Clear(); //json implementation needs to be forced to re-read with each operation
-            var transactionToBeDeleted=Transactions.Where(x => x.TransactionId == transaction.TransactionId).Single();
+            _Transactions.Clear(); //json implementation needs to be forced to re-read with each operation
+            var transactionToBeDeleted=Transactions.Where(x => x.TransactionId == transactionId).Single();
 
             Transactions.Remove(transactionToBeDeleted);
 
             string json = JsonConvert.SerializeObject(Transactions.ToArray());
 
-            System.IO.File.WriteAllText(_filename, json);
+            System.IO.File.WriteAllText("Transactions.json", json);
         }
 
         public List<Transaction> Read()
         {
-            return JsonConvert.DeserializeObject<List<Transaction>>(File.ReadAllText(_filename));
+            return JsonConvert.DeserializeObject<List<Transaction>>(File.ReadAllText("Transactions.json"));
         }
 
         public void Update(TransactionDto transaction)
         {
-            _transActions.Clear(); //json implementation needs to be forced to re-read with each operation
+            _Transactions.Clear(); //json implementation needs to be forced to re-read with each operation
 
             foreach (var currtransaction in Transactions)
             {
@@ -70,7 +66,7 @@ namespace ContributionTracker.InterfaceImplementations
 
             string json = JsonConvert.SerializeObject(Transactions.ToArray());
 
-            System.IO.File.WriteAllText(_filename, json);
+            System.IO.File.WriteAllText("Transactions.json", json);
         }
 
         public void Write(TransactionDto transaction)
@@ -83,7 +79,7 @@ namespace ContributionTracker.InterfaceImplementations
 
             string json = JsonConvert.SerializeObject(Transactions.ToArray());
 
-            System.IO.File.WriteAllText(_filename, json);
+            System.IO.File.WriteAllText("Transactions.json", json);
         }
     }
 }

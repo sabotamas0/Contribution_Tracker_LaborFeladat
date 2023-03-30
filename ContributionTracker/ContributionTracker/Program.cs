@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<ITransactionCrud, JsonCrud>();
+builder.Services.AddScoped<ITransactionRepository, JsonRepository>();
 builder.Services.AddTransient<ITransactionService, TransactionService>();
 
 var app = builder.Build();
@@ -26,6 +26,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Transaction}/{action=AddNewTransactionForm}");
 
 app.Run();

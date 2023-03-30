@@ -5,36 +5,36 @@ namespace ContributionTracker.InterfaceImplementations
 {
     public class TransactionService : ITransactionService
     {
-        private ITransactionCrud _transactionCrud;
-        public TransactionService(IEnumerable<ITransactionCrud> Cruds) 
+        private ITransactionRepository _transactionRepository;
+        public TransactionService(IEnumerable<ITransactionRepository> repositories) 
         {
-            foreach (var Crud in Cruds) 
+            foreach (var repository in repositories) 
             {
-                if(Crud is JsonCrud) // here we can change, which data access we want to use
+                if(repository is JsonRepository) // here we can change, which data access we want to use
                 {
-                    _transactionCrud = Crud;
+                    _transactionRepository = repository;
                     break;
                 }
             }
         }
         public void AddTransaction(TransactionDto transaction)
         {
-            //TODO: Add validation
+            _transactionRepository.Write(transaction);
         }
 
-        public void DeleteTransaction(TransactionDto transaction)
+        public void DeleteTransaction(Guid transactionId)
         {
-            //TODO: Add validation
+            _transactionRepository.Delete(transactionId);
         }
 
         public List<Transaction> GetAllTransactions()
         {
-            //TODO: Add validation
+            return _transactionRepository.Read();
         }
 
         public void UpdateTransaction(TransactionDto transaction)
         {
-            //TODO: Add validation
+            _transactionRepository.Update(transaction);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace ContributionTracker.Interfaces
     {
         List<Transaction> GetAllTransactions();
         void AddTransaction(TransactionDto transaction);
-        void DeleteTransaction(TransactionDto transaction);
+        void DeleteTransaction(Guid transactionId);
         void UpdateTransaction(TransactionDto transaction);
     }
 }
