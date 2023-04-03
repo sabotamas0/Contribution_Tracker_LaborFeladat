@@ -1,0 +1,14 @@
+﻿@using ContributionTracker;
+@model TransactionDto;
+<body>
+    @using (Html.BeginForm("SaveNewTransaction", "Transaction", FormMethod.Post))
+    {
+        @Html.TextBoxFor(model => model.Amount)
+        @Html.TextBoxFor(model => model.PayeeName)
+        @Html.TextBoxFor(model => model.TransactionDate,new { @type="datetime-local",step="any"})
+        @Html.TextBoxFor(model => model.Memo)
+        <input type="submit" value="Submit" id="submit">
+
+    }
+</body>
+

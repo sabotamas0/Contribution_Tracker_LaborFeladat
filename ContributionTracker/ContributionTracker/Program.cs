@@ -1,7 +1,15 @@
+using ContributionTracker.InterfaceImplementations;
+using ContributionTracker.Interfaces;
+using StructureMap;
+using System.Collections.Generic;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ITransactionRepository, JsonRepository>();
+builder.Services.AddTransient<ITransactionService, TransactionService>();
 
 var app = builder.Build();
 
@@ -18,6 +26,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Transaction}/{action=AddNewTransactionForm}");
 
 app.Run();
