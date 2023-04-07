@@ -5710,7 +5710,6 @@ textarea.form-control-lg {
   line-break: auto;
   font-size: 0.875rem;
   word-wrap: break-word;
-  opacity: 0;
 }
 .tooltip.show {
   opacity: 0.9;

@@ -25,7 +25,6 @@ namespace ContributionTracker.InterfaceImplementations
 
         public void Delete(Guid transactionId)
         {
-            _Transactions.Clear(); //json implementation needs to be forced to re-read with each operation
             var transactionToBeDeleted=Transactions.Where(x => x.TransactionId == transactionId).Single();
 
             Transactions.Remove(transactionToBeDeleted);
@@ -42,7 +41,6 @@ namespace ContributionTracker.InterfaceImplementations
 
         public void Update(TransactionDto transaction)
         {
-            _Transactions.Clear(); //json implementation needs to be forced to re-read with each operation
 
             foreach (var currtransaction in Transactions)
             {

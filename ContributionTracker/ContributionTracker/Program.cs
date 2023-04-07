@@ -26,6 +26,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Transaction}/{action=AddNewTransactionForm}");
+    pattern: "{controller=Transaction}/{action=TransactionPage}");
 
 app.Run();

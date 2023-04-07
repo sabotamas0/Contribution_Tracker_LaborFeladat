@@ -1,14 +1,29 @@
 ﻿@using ContributionTracker;
 @model TransactionDto;
-<body>
-    @using (Html.BeginForm("SaveNewTransaction", "Transaction", FormMethod.Post))
-    {
-        @Html.TextBoxFor(model => model.Amount)
-        @Html.TextBoxFor(model => model.PayeeName)
-        @Html.TextBoxFor(model => model.TransactionDate,new { @type="datetime-local",step="any"})
-        @Html.TextBoxFor(model => model.Memo)
-        <input type="submit" value="Submit" id="submit">
 
-    }
-</body>
+@Html.ValidationSummary(true)
+@using (Html.BeginForm("SaveNewTransaction", "Transaction", FormMethod.Post, new { id = "AddNewTransaction" }))
+{
+	<div class="donation-container">
 
+		<div class="donation-box">
+			<div class="title">Contribution Information</div>
+
+			<div class="fields">
+				@Html.LabelFor(model => model.PayeeName)
+				@Html.TextBoxFor(model => model.PayeeName)
+				@Html.LabelFor(model => model.TransactionDate)
+				@Html.TextBoxFor(model => model.TransactionDate,"{0:yyyy-MM-dd}",new {@id="timepicker", @type="datetime-local",step="any"})
+				@Html.LabelFor(model => model.Memo)
+				@Html.TextBoxFor(model => model.Memo)
+				@Html.LabelFor(model => model.Amount)
+				@Html.TextBoxFor(model => model.Amount)
+			</div>
+
+			<div class="confirm">
+				<input onclick="ClearFields(this)" type="button" class="donate-button-clear" value="Clear fields" id="clearAdd">
+				<input type="submit" class="donate-button-submit" value="Contribute now" id="submitAdd">
+			</div>
+		</div>
+	</div>
+}
