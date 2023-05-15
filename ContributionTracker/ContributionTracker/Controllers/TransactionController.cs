@@ -20,11 +20,37 @@ namespace ContributionTracker.Controllers
         }
 
         [HttpGet]
+        public IActionResult DashboardPage()
+        {
+            return View();
+        }
+        /*
+        [HttpGet]
+        public IActionResult ContributionsIncreaseDecreaseByYear()
+        {
+            var model = _transactionService.AverageContributionsByMonthAndYear();
+            return PartialView(model);
+        }
+        */
+        [HttpGet]
+        public IActionResult ContributionsForCurrentYear()
+        {
+            var curryear = DateTime.Now;
+            var model = _transactionService.ContributionsForYear(curryear);
+            return PartialView(model);
+        }
+        [HttpGet]
+        public IActionResult ContributionsByMonthForCurrentYear()
+        {
+            var model = _transactionService.ContributionsByMonthForCurrentYear();
+            return PartialView(model);
+        }
+        [HttpGet]
         public IActionResult TransactionPage()
         {
             return View();
         }
-
+        
         [HttpGet]
         public IActionResult GetAllTransactions()
         {

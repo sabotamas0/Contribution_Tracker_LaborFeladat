@@ -1,0 +1,45 @@
+﻿@model List<Tuple<string, List<int>>>;
+
+<canvas id="barcanvasincreasedecrease"></canvas>
+
+
+<script>
+    $(document).ready(function () {
+        var chartDataRaw = @Html.Raw(Json.Serialize(Model));
+        var chartDataSets = [];
+        chartDataRaw.map(item => {
+            var color = getRandomColor();
+            chartDataSets.push({label:item.item1, backgroundColor: color, data: item.item2});
+        });
+        var lineChartData =
+        {
+            labels: ["Contribution increase/decrease"],
+            datasets: chartDataSets
+        };
+        var ctx1 = document.getElementById("barcanvasincreasedecrease").getContext("2d");
+        var myBar = new Chart(ctx1,
+        {
+            type: 'bar',
+            data: lineChartData,
+            options:
+            {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function (value) { if (value % 1 === 0) { return value; } }
+                        }
+                    }]
+                }
+            }
+        });
+    });
+    function getRandomColor() {
+          var letters = '0123456789ABCDEF';
+          var color = '#';
+          for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+    }
+</script>

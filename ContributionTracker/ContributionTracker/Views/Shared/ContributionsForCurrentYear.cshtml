@@ -1,0 +1,44 @@
+﻿@model List<int>;
+@{
+    var curryear = DateTime.Now.Year;
+}
+
+<canvas id="barcanvasyear"></canvas>
+
+
+<script>
+    $(document).ready(function () {
+        var chartDataRaw = @Html.Raw(Json.Serialize(Model));
+        console.log(chartDataRaw);
+        var barChartData =
+        {
+            labels: ["Contributions for " + @curryear],
+            datasets: 
+            [{
+                label: '@curryear',
+                data: chartDataRaw,
+                backgroundColor: [
+                   "#e8401e",
+                ]
+            }]
+        };
+        var ctx1 = document.getElementById("barcanvasyear").getContext("2d");
+        var myBar = new Chart(ctx1,
+        {
+            labels: ["Contributions for " + @curryear],
+            type: 'bar',
+            data: barChartData,
+            options:
+            {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function (value) { if (value % 1 === 0) { return value; } }
+                        }
+                    }]
+                }
+            }
+        });
+    });
+</script>

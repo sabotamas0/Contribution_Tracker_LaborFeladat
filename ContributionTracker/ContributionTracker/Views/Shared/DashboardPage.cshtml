@@ -1,0 +1,52 @@
+﻿<div class="subcontainer" id="GetContributionsByMonthForCurrentYear">
+    
+</div>
+
+<div class="subcontainer" id="GetContributionsForCurrentYear">
+
+</div>
+
+<div class="subcontainer" id="GetContributionsIncreaseDecreaseByYear">
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("ContributionsByMonthForCurrentYear", "Transaction")',
+            dataType: "html",
+            type: "GET",
+           
+            success: function (response) {
+                $('#GetContributionsByMonthForCurrentYear').html(response);
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+        $.ajax({
+            url: '@Url.Action("ContributionsForCurrentYear", "Transaction")',
+            dataType: "html",
+            type: "GET",
+
+            success: function (response) {
+                $('#GetContributionsForCurrentYear').html(response);
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+        $.ajax({
+            url: '@Url.Action("ContributionsIncreaseDecreaseByYear", "Transaction")',
+            dataType: "html",
+            type: "GET",
+
+            success: function (response) {
+                $('#GetContributionsIncreaseDecreaseByYear').html(response);
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+    });
+</script>
