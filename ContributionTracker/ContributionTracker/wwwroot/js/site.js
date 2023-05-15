@@ -1,4 +1,17 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿
+    const body = document.querySelector("body"),
+    navBar = document.querySelector("nav"),
+    menuBtns = document.querySelectorAll(".menu-icon"),
+    overlay = document.querySelector(".overlay"),
+    modeSwitch = body.querySelector(".toggle-switch"),
+    modeText = body.querySelector(".mode-text");
 
-// Write your JavaScript code.
+        menuBtns.forEach((menuBtn) => {
+        menuBtn.addEventListener("click", () => {
+            navBar.classList.toggle("open");
+        });
+        });
+
+        overlay.addEventListener("click", () => {
+        navBar.classList.remove("open");
+        });

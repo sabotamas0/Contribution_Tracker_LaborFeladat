@@ -1,0 +1,50 @@
+﻿@using ContributionTracker;
+@model List<Transaction>;
+
+@if(Model.Any() && Model!=null)
+{
+<div class="container">
+    <h2>Current Contributions:</h2>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>PayeeName</th>
+                        <th>Amount</th>
+                        <th>TransactionDate</th>
+                        <th>Memo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; ++i)
+                    {
+                        <tr id="@Model[i].TransactionId">
+                            <td>@Model[i].PayeeName</td>
+                            <td>@Model[i].Amount</td>
+                            <td>@Model[i].TransactionDate</td>
+                            <td>@Model[i].Memo</td>
+                            <td>
+                                <div class="toooltip">
+                                     <button class="btn btn-success" onclick="ModifyTransaction(this)" id="ModifyTransaction"><i class="fas fa-edit"></i></button>
+                                     <span class="tooltiptext">Modify</span>
+                                </div>
+                                
+                                <div class="toooltip">
+                                    <button id="delete" onclick="RevealModal(this)" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                    <span class="tooltiptext">Delete</span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+}
+else
+{
+    <h3>Currently, there are no Contributions!</h3>
+}
+

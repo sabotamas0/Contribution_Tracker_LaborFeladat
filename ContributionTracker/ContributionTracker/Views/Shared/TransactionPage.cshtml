@@ -1,0 +1,162 @@
+﻿@{
+    var actionName = ViewBag.ActionName; //copius amount of hacking...
+}
+
+<div class="subcontainer" id="GetAllTransactions">
+
+</div>
+
+@if(actionName != "Modify")
+{
+    <div class="subcontainer" id="AddNewTransactionForm">
+        @if(!Html.ViewData.ModelState.IsValid)
+        {
+            <ul class="errorMessages">
+                @foreach (var modelError in ViewData.ModelState.Keys.SelectMany(key => this.ViewData.ModelState[key].Errors.Select(x => key + ": " + x.ErrorMessage)))
+                {
+                    <li><span>@modelError</span></li>
+                }
+            </ul>
+        }
+        @Html.Partial("AddNewTransactionForm.cshtml")
+    </div>
+}
+
+
+@if (actionName != "Save")
+{
+    <div class="subcontainer" id="ModifyTransactionForm">
+        @if(!Html.ViewData.ModelState.IsValid)
+        {
+            <ul class="errorMessages">
+                @foreach (var modelError in ViewData.ModelState.Keys.SelectMany(key => this.ViewData.ModelState[key].Errors.Select(x => key + ": " + x.ErrorMessage)))
+                {
+                    <li><span>@modelError</span></li>
+                }
+            </ul>
+        }
+        @Html.Partial("ModifyTransactionForm.cshtml")
+    </div>
+}
+
+
+<div class="modale">
+    <div class="modale-dialog">
+        <div class="modale-header">
+            <h2>Please, confirm the deletion</h2>
+            <button onclick="CloseModal()" class="btn-close closemodale"></button>
+        </div>
+        <div class="modale-body">
+            <div class="toooltip">
+                <button id="confirmDeletion" onclick="DeleteTransaction()" class="btn btn-success"><i class="bi bi-check"></i></button>
+                <span class="tooltiptext">Confirm</span>
+            </div>
+            <div class="toooltip">
+                <button onclick="CloseModal()" id="cancelDeletion" class="btn btn-danger"><i class="bi bi-x"></i></button>
+                <span class="tooltiptext">Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        var isvalidtext = '@(Html.ViewData.ModelState.IsValid)';
+        var isTrueSet = (isvalidtext?.toLowerCase?.() === 'true');
+
+        if (isTrueSet) 
+        {
+            ClearFields($("#clearAdd"));
+            $("#ModifyTransactionForm").hide();
+            $("#AddNewTransactionForm").show();
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetAllTransactions", "Transaction")',
+            dataType: "html",
+            type: "GET",
+            contentType: "application/json",
+            success: function (response) {
+                $('#GetAllTransactions').html(response);
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+    });
+    
+    function ModifyTransaction(button) {
+        $("#AddNewTransactionForm").hide();
+        $("#ModifyTransactionForm").show();
+
+        var Id = $(button).closest("tr").attr('id');
+        var row = $(button).closest("tr").find('td');
+
+        var texts = $(row).map(function () {
+            return $(this).text();
+        });
+
+        var jsonObj = {
+            TransactionId: Id,
+            PayeeName: texts[0],
+            Amount: texts[1],
+            Date: texts[2],
+            Memo: texts[3]
+        };
+
+        console.log(JSON.stringify(jsonObj));
+
+        $.ajax({
+            url: '@Url.Action("ModifyTransactionForm", "Transaction")',
+            type: "GET",
+            data: jsonObj,
+            success: function (response) {
+                $('#ModifyTransactionForm').html(response);
+            },
+            error: function (err) {
+                alert(err.responseText);
+            },
+            dataType: "html",
+            contentType: "application/json"
+        });
+    };
+
+    function DeleteTransaction() {
+        var Id = $(window.currentButtonClicked).closest("tr").attr('id');
+
+        $.ajax({
+            url: '@Url.Action("DeleteTransaction", "Transaction")',
+            type: "POST",
+            dataType: "html",
+            data: { transactionId: Id },// for my future sanity's sake: remove contentType on singular non-object parameters https://stackoverflow.com/questions/2002163/jquery-ajax-call-data-parameters-are-not-being-passed-to-mvc-controller-action
+            success: function (response) {
+               $.ajax({
+                    url: '@Url.Action("GetAllTransactions", "Transaction")',
+                    dataType: "html",
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function (response) {
+                        $('#GetAllTransactions').html(response);
+                    },
+                    error: function (err) {
+                        alert(err.responseText);
+                    }
+               });
+            }
+        });
+    };
+
+    function ClearFields(button) {
+        $(button).closest('form').find("input[type=text], textarea").val("");
+        $('#timepicker').val("");
+    };
+
+    function RevealModal(button) {
+        $('.modale').addClass('opened');
+        window.currentButtonClicked = button; //using global variable, to pass the button clicked in the table
+    };
+
+    function CloseModal() {
+        $('.modale').removeClass('opened');
+    };
+</script>

@@ -1,0 +1,26 @@
+﻿@using ContributionTracker;
+@model TransactionDto;
+@using (Html.BeginForm("ModifyTransaction", "Transaction", FormMethod.Post, new { id = "ModifyTransaction" }))
+{
+	<div class="donation-container">
+
+		<div class="donation-box">
+			<div class="title">Contribution Information</div>
+
+			<div class="fields">
+				@Html.HiddenFor(model => model.TransactionId)
+				@Html.LabelFor(model => model.PayeeName)
+				@Html.TextBoxFor(model => model.PayeeName)
+				@Html.LabelFor(model => model.Memo)
+				@Html.TextBoxFor(model => model.Memo)
+				@Html.LabelFor(model => model.Amount)
+				@Html.TextBoxFor(model => model.Amount)
+			</div>
+
+			<div class="confirm">
+				<input type="button" onclick="ClearFields(this)" class="donate-button-clear" value="Clear fields" id="clear">
+				<input type="submit" class="donate-button-submit" value="Modify Contribution" id="submit">
+			</div>
+		</div>
+	</div>
+}
